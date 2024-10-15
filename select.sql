@@ -148,3 +148,5 @@ where ename like '%AM%';
 -- [실습] 사원 이름에 AM이 포함되어 있지 않은 사원 데이터만 출력 
 select * from emp
 where ename not like '%AM%';
+
+-- 와일드 카드 문자가 데이터 일부일 경우 : %
