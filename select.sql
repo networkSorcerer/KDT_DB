@@ -149,4 +149,68 @@ where ename like '%AM%';
 select * from emp
 where ename not like '%AM%';
 
--- 와일드 카드 문자가 데이터 일부일 경우 : %
+-- 와일드 카드 문자가 데이터 일부일 경우  (%, _) escape로 지정된 '\'뒤에 오는 
+-- %와일드 카드가 아니라는 의미
+select * from emp
+where ename like '%\%s' escape '\'; -- 사원 이름, %P로 끝나는 사원을 조회
+
+INSERT INTO emp(empno, ename, job , mgr, hiredate, sal, comm, deptno)
+values (1001, 'jame%s','MANAGER',7839,'2024/10/15',3500,450,30);
+
+delete from emp
+where empno = 1001;
+
+select * from emp;
+
+-- is null 연산자 : 
+-- 데이터의 값에는 null 값을 가질 수 있음, 값이 정해지지 않음을 의미, 연산 불가 (계산, 비교, 할당)
+select ename , sal, sal*12+comm "연봉", comm
+from emp;
+
+-- 비교연산으로 null 비교하기 -- null로 비교 안됨 
+select * from emp
+where comm = null;
+
+SELECT * FROM emp
+WHERE comm is NULL;
+
+-- 직속 상관이 있는 사원 데이터 출력 하기 
+
+SELECT * FROM emp
+WHERE mgr is not NULL;
+
+SELECT * FROM emp
+WHERE mgr is NULL;
+
+-- 정렬을 위한 order by 절 : 오름 차순 또는 내림 차순 정렬 간으 
+
+SELECT * FROM emp
+ORDER BY sal ASC;
+
+--정렬을 위한 order by 절 : 오름 차순 또는 내림차순 정렬 가능 
+select * from emp
+order by sal;
+
+-- 급여에 대한 오름 차순 정렬 
+select * from emp
+order by sal desc;
+
+-- 사원 번호 기준 내림 차순 정렬 하기 
+SELECT * FROM emp
+ORDER BY empno;
+
+-- 정렬 조건을 여러 컬럼을  설정하기
+SELECT * FROM emp
+ORDER BY sal, ename;
+
+SELECT * FROM emp
+ORDER BY deptno ASC, SAL DESC;
+
+-- 별칭 사용과 order by
+SELECT empno 사원번호, ename 사원명, sal 월급, hiredate 입사일 -- 3. 출력해야할 컬럼제한
+FROM emp
+where sal >= 2000
+ORDER BY 월급 DESC, 사원명 ASC;
+
+SELECT ENAME || 'S JOB IS '||JOB AS EMPLOYEE
+FROM EMP;
