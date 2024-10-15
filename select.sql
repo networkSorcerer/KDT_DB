@@ -287,17 +287,24 @@ where MOD(empno ,2) !=0;
 select ename, hiredate
 from emp;
 --13. **EMP테이블에서 9월에 입사한 직원의 정보 조회**
+select * from emp
+where EXTRACT (MONTH from hiredate) =9;
 //14. **EMP테이블에서 81년도에 입사한 직원 조회**
+select * from emp
+where EXTRACT(YEAR FROM hiredate) =1981;
 select * from emp
 where hiredate like '81%';
 //15. **EMP테이블에서 이름이 'E'로 끝나는 직원 조회**
 select * from emp
 where ename like '%E';
 //16. **EMP테이블에서 이름의 세 번째 글자가 'R'인 직원의 정보 조회**
-- **LIKE 사용**
+//- **LIKE 사용**
 select *from emp
 where ename like '__R%';
 --17. **EMP테이블에서 사번, 사원명, 입사일, 입사일로부터 40년 되는 날짜 조회**
+select empno, ename, hiredate, ADD_MONTHS(hiredate, 12*40)
+from emp;
 --18. **EMP테이블에서 입사일로부터 38년 이상 근무한 직원의 정보 조회**
+
 --19. **오늘 날짜에서 년도만 추출**
 
