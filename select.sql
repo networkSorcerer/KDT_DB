@@ -214,3 +214,31 @@ ORDER BY 월급 DESC, 사원명 ASC;
 
 SELECT ENAME || 'S JOB IS '||JOB AS EMPLOYEE
 FROM EMP;
+
+--[실습문제1]--
+select * from emp
+where ename like '%S';
+
+--[실습문제2]--
+select empno, ename,job,sal,deptno
+from emp
+where deptno =30 and job = 'SALESMAN';
+
+--[실습문제3]--
+select empno, ename, sal, deptno
+from emp
+where deptno in (20, 30) and sal > 2000;
+
+--[실습문제4]--
+select * from emp
+where sal >= 2000 and sal <= 3000;
+
+--[실습문제5]--
+select ename, empno, sal ,deptno
+from emp
+where ename like '%E%' and deptno =30 and  
+sal not between 1000 and 2000;
+
+--[실습문제6]--
+select * from emp
+where comm is null and job in ('MANAGER', 'CLERK') and ename != '_L%';
