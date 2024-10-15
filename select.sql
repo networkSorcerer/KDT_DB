@@ -31,5 +31,25 @@ select ename, sal, sal * 12 "연간 급여", sal * 12 + comm "총연봉"
 from EMP;
 
 -- 연습문제 : 직책(job)을 중복 제거하고 출력하기
+select distinct job, empno from emp;
 
+-- where 구문 (조건문)
+-- 데이터 조회할때 사용자 원하는 조건에 맞는 데이터만 조회할 때
 
+select * from EMP -- 먼저 테이블 선택되고, where 절에서 행을 제한하고 , 출력할 열을 결정 
+where deptno = 10;
+
+-- 사원번호가 7369인 사원의 모든 정보를 보여줘
+select * from emp
+where empno = 7369; -- 데이터베이스에서 비교는 =(같다)라는 의미로 사용됨
+
+-- 급여가 2500 초과인 사원번호, 이름 , 직책, 급여 출력
+-- emp 테이블에서 급여가 2500 초관인 행을 선택하고, 사원번호, 사원이름, 직책 , 급여에 컬럼을 선택해 출력
+select empno, ename,job, sal
+from emp
+where sal > 2500;
+
+-- where 절에 기본 연산자 사용
+select e.ename, d.deptno
+from emp e join dept d
+on e.deptno = d.deptno;
