@@ -53,3 +53,40 @@ where sal > 2500;
 select e.ename, d.deptno
 from emp e join dept d
 on e.deptno = d.deptno;
+
+-- where 절에 기본 연산자 사용
+select * from emp
+where sal *12 = 36000;
+-- where 절에 사용하는 비교 연산자 : >,>=,<,<=
+-- 성과급이 500 초과인 사람의 모든 정보 출력
+select * from emp 
+where comm > 500;
+
+-- 입사일이 81년 1월 1일 이전 사람의 모든 정보 출력하기
+select * from emp
+where hiredate < '90-01-01'; -- 데이터 베이스의 문자열 비교시 '', 
+-- DATE타입은 날짜의 형식에 맞으면 가능 
+
+-- 같지 않음을 표현하는 여러가지 방법 <>, !=, ^=, NOT 컬럼명 =
+select * from emp 
+-- where deptno <> 30;
+-- where deptno != 30;
+-- where deptno ^= 30;
+where not deptno =30;
+
+-- 논리 연산자 : AND, OR, NOT
+-- 급여가 3000이상이고 부서가 20번 사원의 모든 정보 출력 하기
+select * from emp
+where sal >= 3000 and deptno =20;
+-- 논리 연산자 : AND, OR, NOT
+-- 급여가 3000이상이거나 부서가 20번 사원의 모든 정보 출력 하기
+select * from emp
+where sal >= 3000 or deptno =20;
+-- 논리 연산자 : AND, OR, NOT
+-- 급여가 3000이상이고 부서가 20번 사원이고, 입사일이 82년 1월1일 이전 인 사원의 모든 정보 출력 하기
+select * from emp
+where sal >= 3000 and deptno =20 and hiredate < '82/01/01';
+-- 논리 연산자 : AND, OR, NOT
+-- 급여가 3000이상이고 부서가 20번이거나 입사일이 82년 1월1일 이전인 사원의 모든 정보 출력 하기
+select * from emp
+where sal >= 3000 or deptno =20 and hiredate < '82/01/01';
