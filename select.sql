@@ -89,4 +89,62 @@ where sal >= 3000 and deptno =20 and hiredate < '82/01/01';
 -- 논리 연산자 : AND, OR, NOT
 -- 급여가 3000이상이고 부서가 20번이거나 입사일이 82년 1월1일 이전인 사원의 모든 정보 출력 하기
 select * from emp
-where sal >= 3000 or deptno =20 and hiredate < '82/01/01';
+where sal >= 3000 or (deptno =20 and hiredate < '82/01/01');
+--급여가 2500 이상이고 직책이 MANGER인 사원의 모든 정보 출력
+select * from emp
+where sal >= 2500 and job = 'MANAGER';
+
+select * from emp
+where job = 'MANAGER' or JOB = 'SALESMAN' or JOB = 'CLERK';
+-- IN 연산자 : 여러개의 열 이름을 조회할 경우 연속해서 나열할수 있음 
+select * from emp
+where JOB in ('MANAGER','SALESMAN','CLERK');
+
+--IN 연산자를 사용해 20번과 30번 부서에 포함된 사원의 모든 정보조회
+select * from emp
+where deptno in (20, 30);
+
+-- NOT IN 연산자를 사용해 20번과 30번 부서에 포함도니 사원 조회
+select * from emp
+where deptno not in (10);
+-- 비교 연산자와 AND연산자를 사용하여 출력하기
+select * from emp
+where job != 'MANAGER' and JOB <>'SALESMAN' and job ^='CLERK';
+
+--BETWEEN A AND B 연산자 : 일정한 범위를 조회할때 사용하는 연산자
+
+--급여가 2000에서 3000 사이 사원의 모든 정보를 출력
+select * from emp
+where sal >= 200 and sal <= 3000;
+
+-- between a and b 연산자 : 일정한 범위를 조회할 떄 사용하는 연산자 
+select * from emp
+where sal not between 2000 and 3000;
+
+-- 사원번호가 7689에서 7902까지의 사원의 모든 정보 출력
+select * from emp
+where empno between 7689 and 7902;
+
+-- 1980년이 아닌 해에 입산한 사원의 모든 정보 출력 
+select * from emp
+where hiredate not between '80/01/01' and '80/12/31';
+
+
+-- LIKE, NOT LIKE 연산자 : 문자열을 검색할 때 사용 하는 연산자 
+-- % : 길이와 상관없이 모든 문자 데이터를 의미
+-- _ : 문자 1개를 의미 
+select empno, ename 
+from emp
+where ename like '%K%';
+-- 앞과 뒤의 문자열 길이에 상관 없이 K라는 문자가 ename에-- 포함된 사원의 정보 출력
+
+-- 사원의 이름의 두번째 글자가 L인 사원만 출력하기
+select *from emp
+where ename LIKE '_L%';
+
+-- [실습] 사원 이름에 AM이 포함되어있는 사원 데이터만 출력 
+select * from emp
+where ename like '%AM%';
+-- [실습] 사원 이름에 AM이 포함되어 있지 않은 사원 데이터만 출력 
+select * from emp
+where ename not like '%AM%';
