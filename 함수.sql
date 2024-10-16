@@ -67,3 +67,113 @@ WHERE LENGTH(ENAME) >= 5;
 SELECT ENAME, LENGTH(ENAME)
     FROM emp
 WHERE LENGTH(ENAME) >= 5;
+
+-- 문자열 길이를 구하는 LENGTH 함수, LENCTHB함수
+-- LENGTH : 문자열 길이를 반환
+-- LENCTHB : 문자열의 바이트를 반환 
+select LENGTH(ename), LENGHB(ename)  --영어는 한바이트를 차지하기 떄문에 길이와 바이트 수가 동일 
+from emp;
+
+select LENGTH('하니'),LENGTHB('하니')from dual; -- 오라클 XE에서 한글은 3바이트 차지
+
+-- 직책 이름의 길이가 6글자 이상이고, comm있는 사원의 모든 정보 출력 
+
+SELECT LENGTH('한글'), LENGTHB('한글')
+    FROM DUAL;
+    
+SELECT *
+    FROM EMP
+    WHERE LENGTH(JOB) >= 6 AND COMM IS NOT NULL AND COMM != 0;
+    
+SELECT JOB, SUBSTR(JOB, 1, 2), SUBSTR(JOB, 3, 2), SUBSTR(JOB, 5)
+FROM EMP;
+
+-- SUBSTR / SUBSTRB :  시작 위치로 부터 선택 개수만큼의 문자를 반환하는 함수, 인덱스는 1부터 시작 
+select job, substr(job,1,2), substr(job,3,2),substr(job,5)
+from emp;
+
+-- substr 함수와 다른 함수 함께 사용 
+SELECT JOB, 
+ SUBSTR(JOB, -LENGTH(JOB)), 
+ SUBSTR(JOB, -LENGTH(JOB), 2),
+ SUBSTR(JOB, -3)
+FROM EMP;
+
+SELECT INSTR('HELLO, ORACLE!', 'L') AS INSTR_1,
+ INSTR('HELLO, ORACLE!', 'L', 5) AS INSTR_2,
+ INSTR('HELLO, ORACLE!', 'L', 2, 2) AS INSTR_3
+FROM DUAL;
+    
+-- INSTR : 문자열 데이터 안에 특정 문자나 문자여이 어디에 포함되어있는지를 알고자 할 때 사용 
+select INSTR('HELLO, ORACLE','L' )as INSTR_1,
+INSTR('HELLO, ORACLE', 'L',5)as INSTR_2,
+INSTR('HELLO, ORACLE', 'L',2,2) AS INSTR_3 
+from emp;
+
+SELECT *
+FROM EMP 
+WHERE INSTR(ENAME, 'S') > 0; -- s라는 문자가 포함된 행 출력
+
+SELECT *
+FROM EMP 
+WHERE ENAME LIKE '%S%';
+
+-- replace : 특정 문자열 데이터에 포함된 문자를 다른 문자로 대체 할 때 사용
+-- 대체할 문자를 지정하지 않으면 삭제
+select '010-5006-4146' as "변경이전",
+REPLACE('010-5006-4146','-','/') as "변경 이후 1",
+REPLACE('010-5006-4146','-') as "변경 이후2"
+from dual;
+
+-- LPAD /RPAD : 기준 공간 칸수를 지정하고 빈칸 만큼을 특정 문자로 채우는 함수
+select LPAD('ORACLE',10,'+')from dual;
+select RPAD('ORACLE',10,'+')from dual;
+
+select RPAD('01022-',14,'*') as RPAD_JUMIN,
+RPAD('010-5006-',13,'*') AS RPAD_PHONE
+from dual;
+
+-- 두 문자열을 합치는 concat 함수
+select concat(empno,ename ) AS "사원정보",
+concat(empno,concat(' : ', ename)) AS "사원정보 :"
+from emp
+where ename = 'JAMES';
+
+-- TRIM / LTRIM / RTRIM : 문자열 데이터에서 특정 문자들 지우기 위해 사용
+SELECT '[' || TRIM(' _Oracle_ ') || ']' AS TRIM,
+ '[' || LTRIM(' _Oracle_ ') || ']' AS LTRIM,
+ '[' || LTRIM('<_Oracle_>', '<_') || ']' AS LTRIM_2,
+ '[' || RTRIM(' _Oracle_ ') || ']' AS RTRIM,
+ '[' || RTRIM('<_Oracle_>', '_>') || ']' AS RTRIM_2
+ FROM DUAL;
+ 
+ -- 날짜 데이터를 다루는 함수 
+ -- 날짜 데이터 + 숫자 : 가능, 날짜에서 숫자 만큼의 이 후 날짜
+ -- 날짜 데이터 - 숫자 : 가능, 날짜에서 숫자 만큼의 이 전 날짜
+ -- 날짜 데이테 - 날짜 데이터 : 가능 , 두 날짜간의 일수 차이
+ -- 날짜 데이터 + 날짜 데이터 : 연산 불가
+ -- SYSDATE : 운영체제로 부터 시간을 가져오는 함수
+ select sysdate from dual;
+
+select sysdate as "현재시간",
+sysdate -1 as "어제",
+sysdate +1 as "내일"
+from dual;
+
+-- 몇개월 이후 날짜를 구하는 ADD_MONTH 함수 : 특정 날짜에 지정한 개월 수 이후 날짜 데이터를 반환
+select sysdate,
+add_months(sysdate, 3) AS "3개월 이후 날짜 데이터"
+from dual;
+
+-- 입사 10주년이 되는 사원들의 데이터 출력하기(입사일로 부터 10년이 경과한 날짜 데이터 반환)
+select empno, ename, hiredate as "입사일",add_months(hiredate, 120) as "10주년"
+from emp;
+
+-- 두 날짜간의 개월수 차이를 구하는 MONTHS_BETWEEN 함수
+select empno, ename, hiredate, sysdate,
+MONTHS_BETWEEN(hiredate, sysdate)as "-재직 기간",
+MONTHS_BETWEEN(sysdate, hiredate) as "재직 기간",
+trunc(MONTHS_BETWEEN(sysdate, hiredate)) as "재직 기간2"
+from emp;
+
+-- 돌아오는 요일, 달의 마지막 날짜
