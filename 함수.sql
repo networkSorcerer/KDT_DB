@@ -213,4 +213,58 @@ from emp;
 select 1300 - '1500','1300'+'1500'
 from dual;
 
+--TO_DATE : 문자열로 명시된 날짜로 변환하는 함수
+select TO_DATE('24-10-24','yy/mm/dd')as "날짜타입1",
+to_date('20240714','yyyy/mm/dd')as "날짜타입2"
+from dual;
+
+-- 1981년 7월 1일 이후 입사한 사원 정보 출력하기
+select * from emp
+where hiredate > to_date('1981/07/01','yyyy/mm/dd');
+
+
+-- NULL 처리 함수 : 특정 열의 행에 데이터가 없는 경우 데이터값이 NULL이 됨 (NULL 값이 없음)
+-- NULL : 값이 할당 되지 않았기 때문에 공백이나 0과는 다른의미, 연산 (계산 , 비교 등등)
+-- NVL(검사할 데이터 또는 열, 앞의 데이터가 NULL인 경우 대체할 값) : 
+select empno, ename, sal, comm, sal+comm, 
+nvl(comm, 0),
+sal*12+nvl(comm,0)as 연봉
+from emp;
+
+-- NVL2(검사할 데이터, 데이터 NULL이 아닐 때 반환 되는 값 , 데이터 NULL일때 반환 되는 값)
+select empno, ename, comm, 
+nvl2(comm, '0','X') as comm,
+nvl2(comm, sal*12+comm, sal*12)as 연봉
+from emp;
+
+-- NULLIF : 두 값을 비교하여 동일하면 null, 동일하지 않으면 첫 번째 값을 반환 
+select nullif(10,10), nullif('A','B')
+from dual;
+
+-- decode : 주어진 데이터 값이 조건 값과 일치하는 값을 출력하고 일치하는 값이 없으면 기본값출력
+select empno, ename , job, sal,
+decode(job, 'MANAGER', sal+1.1,
+'salesman', sal*1.05,
+'analyst',sal,
+sal*1.03) as "연봉인상"
+from emp;
+
+-- case : sql의 표준 함수 일반적으로 select절에서 많이 사용됨
+select empno, ename, job, sal,
+case job
+when 'MANAGE' then sal * 1.1
+when 'SALESMAN' then sal*1.05
+when 'ANALIST' then sal
+else sal *1.03
+end as "연봉인상"
+from emp;
+
+-- 열 값에 따라서 출력이 달라지는 case 문 : 기준 데이터를 저장하지 않고 사용하는 방법
+select empno, ename, comm,
+case 
+when comm is null then '해당사항없음'
+when comm = 0 then '수당없음'
+when comm > 0 then '수당 : ' || comm
+end as "수당 정보"
+from emp;
 
