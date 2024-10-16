@@ -176,4 +176,27 @@ MONTHS_BETWEEN(sysdate, hiredate) as "재직 기간",
 trunc(MONTHS_BETWEEN(sysdate, hiredate)) as "재직 기간2"
 from emp;
 
--- 돌아오는 요일, 달의 마지막 날짜
+-- 돌아오는 요일(NEXT_DAY), 달의 마지막 날짜(LAST_DAY)
+select sysdate,
+next_day(sysdate, '월요일'),
+LAST_DAY(sysdate)
+from dual;
+
+select last_day('24/8/28') from dual;
+
+-- 날짜 정보 추출하는 함수 : extract
+select extract (year from date '2024-10-16')
+from dual;
+
+select * from emp
+where extract(month from hiredate) =12;
+
+
+-- 자료형을 변환하는 형 변환 함수
+select empno , ename, empno + '500'
+from emp
+where ename = 'FORD';
+
+-- 날짜 , 숫자를 문자로 변환하는 TO_CHAR 함수 : 자바의 SimpleDateFormat 유사
+select sysdate as "기본 시간 형태", to_char(sysdate, 'yyyy/mm/dd HH24:MI:SS')as "현재날짜"
+from dual;
