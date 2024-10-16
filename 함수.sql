@@ -200,3 +200,17 @@ where ename = 'FORD';
 -- 날짜 , 숫자를 문자로 변환하는 TO_CHAR 함수 : 자바의 SimpleDateFormat 유사
 select sysdate as "기본 시간 형태", to_char(sysdate, 'yyyy/mm/dd HH24:MI:SS')as "현재날짜"
 from dual;
+
+-- 숫자 데이터 형식을 지정 하여 출력하기
+select sal, 
+to_char(sal, '$999,999')as sal_$, -- 9는 숫자의 한자리를 의미하고 빈자리를 채우지 않음
+to_char(sal,'L999,999')AS sal_L, -- 지역 화폐 단위 출력 
+to_char(sal, '999,999.00')as sal_1, -- 0은 빈자리를 0으로 채움
+to_char(sal, '000,999,999.00') as sal_2 
+from emp;
+
+--TO_NUMBER : 숫자 타입의 문자열을 숫자 데이터로 변환해주는 함수
+select 1300 - '1500','1300'+'1500'
+from dual;
+
+
