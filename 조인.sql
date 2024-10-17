@@ -16,3 +16,9 @@ select empno, ename,job,sal, e.deptno
 from emp e, dept d
 where e.deptno = d.deptno
 order by empno;
+
+--ANSI ¡∂¿Œ
+select empno, ename, job, sal, e.deptno
+from emp e join dept d
+on e.deptno = d.deptno
+order by empno;
