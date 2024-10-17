@@ -63,6 +63,41 @@ from emp e join dept d
 on e.deptno = d.deptno
 order by e.deptno;
 
+select e.ename, d.deptno, d.dname
+from emp e right outer join dept d 
+on e.deptno = d.deptno
+order by e.deptno;
 
+-- natural join : 등가 조인과 비슷하지만 where 조건절 없이 사용 
+-- (두테이블의 동일한 이름이 있는 열을 자동으로 찾아서 조인 해줌
+select empno, ename, deptno, dname
+from emp natural join dept;
+
+-- join ~ using : 등가 조인을 대신하는 조인 방식
+select e.empno, e.ename, e.job, deptno, d.dname, d.loc
+from emp e join dept d 
+using(deptno)
+order by e.empno;
+
+
+-- Q1. 급여가 2000초과인 사원들의 정보 출력 (부서 번호, 부서이름, 사원 번호, 사원이름, 급여)
+-- join on , natural join, join using
+select d.deptno, d.dname, e.empno, e.ename, e.sal
+from emp e join dept d
+on e.deptno = d.deptno;
+
+-- Q2. 각 부서별 평균 급여, 최대 급여, 최소 급여, 사원수 출력
+-- (부서번호, 부서이름,평균 급여, 최대 급여, 최소 급여, 사원수)
+-- 제공하신 SQL 쿼리는 대체로 잘 작성되었지만, group by에 d.dname을 포함하지 않으면 오류가 발생할 수 있습니다. 
+-- 이유는 GROUP BY 절에 포함되지 않은 열(d.dname)을 SELECT에서 직접 사용할 수 없기 때문입니다.
+select e.deptno, d.dname, round(avg(e.sal)),max(e.sal),min(e.sal),count(empno)
+from emp e join dept d 
+on e.deptno = d.deptno
+group by e.deptno, d.dname;
+
+-- Q3. 모든 부서정보와 사원 정보 출력 (부서 번호와 부서 이름 순으로 정렬), 모든 부서가 나와야 함 
+select * from emp e right outer join dept d
+on e.deptno = d.deptno
+order by d.deptno, d.dname;
 
 
