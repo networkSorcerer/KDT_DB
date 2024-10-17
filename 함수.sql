@@ -308,12 +308,55 @@ from emp
 group by deptno;
 
 -- group by 없이 출력하려면?
-select max(sal) from emp where deptno = 10;
-select max(sal) from emp where deptno = 20;
+select max(sal) from emp where deptno = 10
+union all
+select max(sal) from emp where deptno = 20
+union all
 select max(sal) from emp where deptno = 30;
 
+-- 부서 번호가 20인 사원중 입사일이 가장 최근 입사자 출력하기
+select max(hiredate)
+from emp
+where deptno = 20;
+
+-- 서브쿼리 사용하기 : 각 부서별 최대(MAX) 급여 출력하는데 사원번호, 이름 , 직책, 부서번호출력
+select max(sal)
+from emp e2
+where e2.deptno = 10;
 
 
+select empno, ename, job, deptno
+from emp e
+where sal = (
+select max(sal)
+from emp e2
+where e2.deptno = e.deptno
+);
+
+-- having 절 : 그룹화된 대상에 대한 출력 제한
+-- group by 존재할 때만  사용할 수 있음
+-- where 조건절과 동일하게 동작하지만, 그룹화된 결과 값의 범위를 제한 할때 사용 
+select deptno, job, avg(sal)
+from emp
+group by deptno, job
+having avg(sal) >= 2000
+order by deptno;
+
+-- where 절과 having절 함께 사용하기
+select deptno, job, avg(sal) -- 5. 출력할 열 제한 
+from emp            --1. 먼저 테이블을 가져옴 
+where sal <= 3000  --2. 급여 기준으로 행을 제한 
+group by deptno, job --3. 부서별, 직책별 그룹화
+having avg(sal) >= 2000 --4. 그룹내에서 행 제한 
+order by deptno, job; -- 6. 그룹별, 직책별 오름차순 정렬
+
+-- having절을 사용하여 emp 테이블의 부서별 직책의 평균 급여가 500 이상인 
+-- 사원들의 부서 번호, 직책, 부서별 직책의 평균 급여가 출력
+select deptno, job, avg(sal)
+from emp 
+group by deptno, job
+having avg(sal) >= 500
+order by deptno, job;
 
 
 
