@@ -393,15 +393,15 @@ select to_char(hiredate, 'yyyy') as hire_year,deptno, count(empno), max(sal),sum
 from emp
 group by to_char(hiredate, 'yyyy'), deptno;
 
--- 그룹화 관련 기타 함수 : ROLLUP
-select detpno as "부서번호",
-job as "직책",
+-- 그룹화 관련 기타 함수 : ROLLUP 중간 합계를 낼수 있다.
+select nvl(to_char(deptno),'전체부서') as "부서번호",
+nvl(to_char(job), '부서별 직책' )as "직책",
 count(*) as "사원수",
 max(sal) as "최대급여",
 min(sal) as "최소급여",
 round(avg(sal))as "평균급여"
 from emp
-group by deptno, job
+group by ROLLUP(deptno, job)
 order by "부서번호","직책";
 
 
