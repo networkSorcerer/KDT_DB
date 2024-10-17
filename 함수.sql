@@ -268,3 +268,41 @@ when comm > 0 then '수당 : ' || comm
 end as "수당 정보"
 from emp;
 
+
+--다중행 함수 : 여러행에 대해서 함수가 적용되어 하나의 결과를 나타내는 함수
+select deptno, sum(sal)
+from emp
+group by deptno;
+-- 다중행 함수의 종류
+-- sum() : 지정한 데이터의 합을 반환
+-- count() : 지정한 데이터의 개수를 반환
+-- max() : 최대값 반환 
+-- min() : 최소값 반환 
+-- avg() : 평균값 반환 
+select sum(distinct sal), sum(sal)
+from emp;
+
+-- 모든 사원에 대해서 급여와 추가 수당의 합을 구하기
+select sum(sal), sum(comm)
+from emp;
+
+-- 20번 부서의 모든 사원에 대해서 급여과 추가 수당의 합을 구하기
+select sum(sal), sum(comm)
+from emp
+where deptno =20;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
