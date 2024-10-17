@@ -30,3 +30,4 @@ minus
 select empno, ename, sal
 from emp
 where sal > 2000;
+
