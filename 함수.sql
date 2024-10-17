@@ -358,7 +358,40 @@ group by deptno, job
 having avg(sal) >= 500
 order by deptno, job;
 
+--2. emp 테이블을 이용하여 부서번호, 평균급여, 최고급여, 최저급여, 사원수를 출력,
+-- 단, 평균 급여를 출력할때는 소수점을 제외하고 부서 번호별로 출력
+select deptno, trunc(avg(sal)), max(sal), min(sal), count(empno)
+from emp
+group by deptno;
+-- 3. 같은 직책에 종사하는 사원이 3명 이상인 직책과 인원을 출력
+select job, count(empno)
+from emp
+group by job 
+having count(empno) >= 3;
+--4. 사원들의 입사연도를 기준으로 부서별로 몇명이 입사했는지 출력
+select hiredate, deptno, count(empno)
+from emp
+group by hiredate, deptno;
+SELECT TO_CHAR(hiredate, 'YYYY') AS hire_year, deptno, COUNT(empno) AS employee_count
+FROM emp
+GROUP BY TO_CHAR(hiredate, 'YYYY'), deptno;
 
+--5. 추가 수당을 받는 사원 수와 받지 않는 사원수를 출력 (o,x로 표기 필요)
+select
+case 
+when comm is not null then 'O'
+else 'X'
+end as comm_status,
+count(empno) as employee_count
+from emp
+group by case
+when comm is not null then 'O'
+else 'X'
+end;
+--6. 각부서의 입사 연도별 사원수, 최고급여, 급여 합, 평균 급여를 출력
+select to_char(hiredate, 'yyyy') as hire_year,deptno, count(empno), max(sal),sum(sal),round(avg(sal))
+from emp
+group by to_char(hiredate, 'yyyy'), deptno;
 
 
 
