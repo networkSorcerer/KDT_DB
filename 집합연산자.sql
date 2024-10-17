@@ -12,3 +12,21 @@ union
 select empno, ename, sal, deptno
 from emp 
 where deptno =30;
+
+-- 교집합 : INTERSECT
+-- 여러개의 SQL문의 결과에 대한 교집합을 반환
+select empno, ename, sal
+from emp
+where sal > 1000  -- 1001 ~
+INTERSECT
+select empno, ename, sal
+from emp
+where sal < 2000;
+
+-- 차집합 : MINUS, 중복행에 대한 결과를 하나의 결과를 보여줌
+select empno, ename, sal
+from emp
+minus
+select empno, ename, sal
+from emp
+where sal > 2000;
