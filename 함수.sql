@@ -279,6 +279,7 @@ group by deptno;
 -- max() : 최대값 반환 
 -- min() : 최소값 반환 
 -- avg() : 평균값 반환 
+-- 집계함수(다중행 함수) null값이 포함되어있으면 무시
 select sum(distinct sal), sum(sal)
 from emp;
 
@@ -286,13 +287,30 @@ from emp;
 select sum(sal), sum(comm)
 from emp;
 
--- 20번 부서의 모든 사원에 대해서 급여과 추가 수당의 합을 구하기
-select sum(sal), sum(comm)
+-- 각 부서의 모든 사원에 대해서 급여과 추가 수당의 합을 구하기
+select sum(sal), sum(comm), deptno
 from emp
-where deptno =20;
+group by deptno;
 
+-- 각 직책별로 급여와 추가 수당의 합 구하기 
+select job, sum(sal), sum(comm)
+from emp
+group by job;
 
+-- 각 직책별로 급여와 추가 수당의 합 구하기
+select job as 직책, sum(sal)as 급여,sum(comm) as 성과급
+from emp
+group by job;
 
+-- 각 부서별 최대(max) 급여 출력하기
+select max(sal),deptno
+from emp
+group by deptno;
+
+-- group by 없이 출력하려면?
+select max(sal) from emp where deptno = 10;
+select max(sal) from emp where deptno = 20;
+select max(sal) from emp where deptno = 30;
 
 
 
