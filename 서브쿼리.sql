@@ -78,7 +78,22 @@ where sal < all(select sal
 from emp
 where deptno = 30);
 
+-- 직책이 'MANAGER'인 사원보다 많은 급여 받는 사원이 사원번호, 이름, 급여, 부서 이름 출력하기
+select e.empno, e.ename, e.sal, d.dname
+from emp e join dept d 
+on e.deptno = d.deptno
+where sal > all (
+select sal 
+from emp
+where job = 'MANAGER');
 
-
+-- EXISTS : 서브쿼리의 결과 값이 하나 이상 존재하면 true 
+select *
+from emp
+where exists (
+select dname 
+from dept d
+where deptno = 10
+);
 
 
