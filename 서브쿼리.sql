@@ -159,3 +159,76 @@ join dept d
 on e.deptno = d.deptno 
 order by "급여등급";
 
+-- 부서 위치가 NEW YORK인 경우에는 본사, 그 외는 분점으로 반환하도록 만들기 
+select empno, ename, 
+case 
+when deptno = (
+ select deptno
+ from dept
+ where loc = 'NEW YORK') then '본사'
+else '분점'
+end as "소속"
+from emp 
+order by "소속";
+
+select * from salgrade;
+select * from emp;
+
+-- 연습 문제 1번 
+-- 전체 사원 중 ALLEN과 같은 직책(JOB)인  사원들의 사원 정보, 부서 정보를 
+-- 다음과 같이 출력하는 sql문을 작성하세요. (직책, 사원번호, 사원이름, 급여, 부서번호, 부서 이름)
+select e.job, e.empno, e.ename, e.sal, d.deptno, d.dname
+from emp e join dept d 
+on e.deptno = d.deptno
+where job = (
+select job
+from emp
+where ename = 'ALLEN');
+
+
+-- 연습 문제 2번 
+-- 전체 사원의 평균 급여(SAL)보다 높은 급여를 받는 사원들의 사원 정보, 부서 정보, 급여 등급 정보를 출력하는
+-- SQL문을 작성하세요(단 출력할 때 급여가 많은 순으로 정렬하되 급여가 같을 경우에는 
+-- 사원 번호를 기준으로 오름차순으로 정렬하세요).
+-- (사원 번호, 이름, 입사일, 급여, 급여 등급, 부서이름, 부서위치)
+select e.empno, e.ename, e.hiredate, e.sal, s.grade, d.dname, d.loc
+from emp e join salgrade s
+on e.sal between s.losal and s.hisal
+join dept d
+on e.deptno = d.deptno
+where sal > (
+select avg(sal)
+from emp)
+order by e.sal desc , e.empno;
+
+select *from dept;
+-- 연습 문제 3번
+-- 10번 부서에 근무하는 사원 중 30번 부서에는 존재하지 않는 직책을 가진 사원들의 사원 정보, 
+-- 부서 정보를 다음과 같이 출력하는 SQL문을 작성하세요.
+-- (사원번호, 사원이름, 직책, 부서번호, 부서이름, 부서위치) 
+
+select e.empno, e.ename , e.job , d.deptno, d.dname, d.loc
+from emp e join dept d
+on e.deptno = d.deptno
+where e.deptno =10 and e.job NOT IN (
+select e.job 
+from emp e join dept d
+on e.deptno = d.deptno
+where d.deptno =30);
+-- 연습 문제 4번
+-- 직책이 SALESMAN인 사람들의 최고 급여보다 높은 급여를 받는 사원들의 사원 정보, 
+-- 급여 등급 정보를 다음과 같이 출력하는 SQL문을 작성하세요
+-- (단 서브쿼리를 활용할 때 다중행 함수를 사용하는 방법과 사용하지 않는 방법을 통해 
+-- 사원 번호를 기준으로 오름차순으로 정렬하세요).
+select e.empno, e.ename, s.grade
+from emp e join salgrade s
+on e.sal between s.losal and s.hisal
+where sal > (select MAX(sal) from emp where job = 'SALESMAN')
+order by empno;
+
+select e.empno, e.ename, s.grade
+from emp e 
+join salgrade s on e.sal between s.losal and s.hisal
+join (select MAX(sal) as max_sal from emp where job = 'SALESMAN') salesman_max 
+on e.sal > salesman_max.max_sal
+order by e.empno;
