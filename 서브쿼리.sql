@@ -93,7 +93,69 @@ from emp
 where exists (
 select dname 
 from dept d
-where deptno = 10
+where deptno = 40
 );
 
+-- 다중열 서브쿼리 : 서브쿼리의 결과가 2개 이상의 컬럼으로 반환 되어메인 쿼리에 전달하는 쿼리
+select empno, ename, sal, deptno
+from emp 
+where (deptno, sal) in (
+select deptno, sal
+from emp 
+where deptno = 30
+);
+
+select *
+from emp
+where (deptno, sal) in (
+select deptno, max(sal)
+from emp
+group by deptno
+);
+
+-- FROM 절에 사용하는 서브쿼리 : 인라인뷰라고 하기도 함
+-- 테이블 내 데이터 규모가 너무 크거나 현재 작업에 
+-- 불필요한 열이 너무 많아 일부 행과 열만 사용하고자 할 때 유용
+select e10.empno, e10.ename, e10.deptno, d.dname, d.loc
+from (
+    select *
+    from emp
+    where deptno = 10 )  e10
+    join dept d
+    on e10.deptno = d.deptno;
+    
+-- 먼저 정렬하고 해당 갯수만 가져오기 : 급여가 많은 5명에 대한 정보 보여줘
+select rownum, ename, sal
+from (
+    select *
+    from emp
+    order by sal desc
+)
+where rownum <= 5;
+
+-- select 절에 사용하는 서브쿼리 : 단일행 서브쿼리를 스칼라 서브쿼리라고 함
+-- select 절에 명시하는 서브쿼리는 반드시 하나의 결과만 반환하도록 작성해야함 
+select empno, ename, job, sal,
+(
+select grade 
+from salgrade
+where e.sal between losal and hisal
+) as "급여 등급" ,
+deptno as "부서 번호",
+(
+    select dname
+    from dept d
+    where e.deptno = d.deptno
+) as "부서이름"
+from emp e
+order by "급여 등급";
+
+--조인 문으로 변경 하기
+select e.empno, e.ename, e.job, e.sal,s.grade as "급여등급",d.deptno, d.dname
+from emp e 
+join salgrade s 
+on e.sal between s.losal and s.hisal
+join dept d 
+on e.deptno = d.deptno 
+order by "급여등급";
 
