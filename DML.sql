@@ -51,4 +51,10 @@ set dname = 'web-program',
 loc = 'suwon'
 where deptno = 70;
 
+delete from dept_temp
+where deptno = 70;
+
+delete from dept_temp
+where loc = 'suwon';
+
 
