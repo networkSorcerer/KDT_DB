@@ -31,11 +31,12 @@ where comm > (
 select comm 
 from emp
 where ename = 'ALLEN'
+and comm is not null
 );
 
 -- 문제 : james보다 먼저 입사한 사원들의 정보 출력 
 select * from emp
-where hiredate > (
+where hiredate < (
 select hiredate
 from emp
 where ename = 'JAMES'
@@ -45,6 +46,6 @@ where ename = 'JAMES'
 select e.empno, e.ename, e.sal , e.deptno, d.dname, d.loc
 from emp e join dept d
 on e.deptno = d.deptno
-where e.deptno = '20' and e.sal > (
+where e.deptno = 20 and e.sal > (
 select avg(sal)
 from emp);
