@@ -49,3 +49,36 @@ on e.deptno = d.deptno
 where e.deptno = 20 and e.sal > (
 select avg(sal)
 from emp);
+
+-- 실행 결과가 여러개인 다중행 서브쿼리
+-- IN : 메인 쿼리의 데이터가 서브쿼리의 결과중 하나라도 일치하는 데이터가 있다면 true
+-- any, some : 메인 쿼리의 조건식을 만족하는 서브쿼리의 결과가 하나 이상이면 true
+-- all : 메인 퀄의 조건식을 서브퀄의 결과 모두 만족하면 true
+-- exists : 서브쿼리의 결과가 존재하면 (즉 , 한개 이상의 행이 결과를 만족하면) true
+
+--메인 쿼리에 급여가 서브 쿼리에서 각 부서의 최대 급여가 같은 사원의 모든 정보가 출력
+select * 
+from emp
+where sal in (
+select max(sal)
+from emp
+group by deptno
+);
+
+select empno, ename, sal
+from emp
+where sal > any(
+select sal from emp
+where job = 'SALESMAN');
+
+-- 30번 부서 사원들의 급여보다 적은 급여를 받는 사원 정보 출력
+select *
+from emp
+where sal < all(select sal
+from emp
+where deptno = 30);
+
+
+
+
+
