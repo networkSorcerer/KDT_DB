@@ -45,3 +45,10 @@ rollback;
 select * from dept_temp;
 
 insert into dept_temp (deptno, dname, loc) values (80,'frontend','suwon');
+
+update dept_temp 
+set dname = 'web-program',
+loc = 'suwon'
+where deptno = 70;
+
+
