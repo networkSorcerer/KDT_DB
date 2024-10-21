@@ -108,3 +108,4 @@ insert into table_default values ('민지',null,'010-1234-5678');
 insert into table_default(login_id,tel) values ('장원영','010-1234-5678');
 
 select * from table_default;
+
