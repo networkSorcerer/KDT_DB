@@ -1,4 +1,7 @@
 -- 시퀀스 생성(ID값 자동 생성)`
+ALTER USER PC QUOTA UNLIMITED ON USERS;
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON USERS TO PC;
 CREATE SEQUENCE USER_SEQ START WITH 1 INCREMENT BY 1;
 CREATE SEQUENCE CATEGORY_SEQ START WITH 1 INCREMENT BY 1;
 CREATE SEQUENCE PRODUCT_SEQ START WITH 1 INCREMENT BY 1;
@@ -14,6 +17,7 @@ alter table users add address varchar2(255);
 alter table users add phone_number varchar2(20);
 alter table users add id varchar2(50);
 select * from users;
+delete from users where user_id = 4;
 ALTER TABLE USERS
 DROP COLUMN id;
 
