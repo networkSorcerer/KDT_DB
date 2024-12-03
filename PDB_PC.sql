@@ -1,32 +1,12 @@
--- 시퀀스 생성(ID값 자동 생성)`
-ALTER USER PC QUOTA UNLIMITED ON USERS;
-
-GRANT SELECT, INSERT, UPDATE, DELETE ON USERS TO PC;
-CREATE SEQUENCE USER_SEQ START WITH 1 INCREMENT BY 1;
-CREATE SEQUENCE CATEGORY_SEQ START WITH 1 INCREMENT BY 1;
-CREATE SEQUENCE PRODUCT_SEQ START WITH 1 INCREMENT BY 1;
-CREATE SEQUENCE ORDER_SEQ START WITH 1 INCREMENT BY 1;
-CREATE SEQUENCE ORDER_DETAIL_SEQ START WITH 1 INCREMENT BY 1;
-CREATE SEQUENCE REVIEW_SEQ START WITH 1 INCREMENT BY 1;
-CREATE SEQUENCE ADMIN_LOG_SEQ START WITH 1 INCREMENT BY 1;
-CREATE SEQUENCE CUSTOM_SEQ START WITH 1 INCREMENT BY 1;
-CREATE SEQUENCE CUSTOM_DETAIL_SEQ START WITH 1 INCREMENT BY 1;
-CREATE SEQUENCE CART_SEQ START WITH 1 INCREMENT BY 1;
-CREATE SEQUENCE CART_ITEM_SEQ START WITH 1 INCREMENT BY 1;
-alter table users add address varchar2(255);
-alter table users add phone_number varchar2(20);
-alter table users add id varchar2(50);
-select * from users;
-delete from users where user_id = 4;
-ALTER TABLE USERS
-DROP COLUMN id;
-
+-- 데이터 테이블 모음
 -- 사용자 테이블
 CREATE TABLE USERS (
     user_id NUMBER PRIMARY KEY,  -- 사용자 ID (자동 생성)
-    username  VARCHAR2(30),  -- 사용자 이름
+    username VARCHAR2(30),  -- 사용자 이름
     password VARCHAR2(64),  -- 비밀번호 (암호화된 형태로 저장)
     email VARCHAR2(150) UNIQUE,  -- 이메일 (유니크 제약)
+    address VARCHAR2(255),  -- 사용자 주소
+    phone_number VARCHAR2(20)  -- 전화번호
     role VARCHAR2(50) DEFAULT 'USER'  -- 사용자 역할 (기본값: 'USER')
 );
 
@@ -116,21 +96,16 @@ CREATE TABLE ORDER_DETAILS (
     CONSTRAINT FK_ORDER_CUSTOM FOREIGN KEY (custom_id) REFERENCES CUSTOM_ORDERS(custom_id)  -- 커스텀 주문 테이블과 연동
 );
 
--- 장바구니 테이블
-CREATE TABLE CART (
-    cart_id NUMBER PRIMARY KEY,  -- 장바구니 ID (자동 생성)
-    user_id NUMBER NOT NULL,  -- 사용자 ID (필수)
-    CONSTRAINT FK_CART_USER FOREIGN KEY (user_id) REFERENCES USERS(user_id)  -- 사용자 테이블과 연동
-);
 
 -- 장바구니 아이템 테이블
 CREATE TABLE CART_ITEMS (
     cart_item_id NUMBER PRIMARY KEY,  -- 장바구니 아이템 ID (자동 생성)
-    cart_id NUMBER NOT NULL,  -- 장바구니 ID (필수)
+    user_id NUMBER NOT NULL,  -- 사용자 ID (필수)
     product_id NUMBER,  -- 상품 ID
     quantity NUMBER(5) CHECK (quantity > 0),  -- 수량 (0 이상)
     custom_id NUMBER,  -- 커스텀 주문 ID
-    CONSTRAINT FK_CART_CART FOREIGN KEY (cart_id) REFERENCES CART(cart_id) ON DELETE CASCADE,  -- 장바구니 테이블과 연동 (장바구니 삭제 시 연관된 아이템 삭제)
+    CONSTRAINT FK_CART_USER FOREIGN KEY (user_id) REFERENCES USERS(user_id),  -- 사용자 테이블과 연동
     CONSTRAINT FK_CART_PRODUCT FOREIGN KEY (product_id) REFERENCES PRODUCTS(product_id),  -- 상품 테이블과 연동
-    CONSTRAINT FK_CART_CUSTOM FOREIGN KEY (custom_id) REFERENCES CUSTOM_ORDERS(custom_id)
-    );
+    CONSTRAINT FK_CART_CUSTOM FOREIGN KEY (custom_id) REFERENCES CUSTOM_ORDERS(custom_id)  -- 커스텀 주문 테이블과 연동
+);
+
